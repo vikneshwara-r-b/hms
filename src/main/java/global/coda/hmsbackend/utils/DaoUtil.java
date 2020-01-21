@@ -18,10 +18,12 @@ import static global.coda.hmsbackend.constants.NumericConstants.TWO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.models.User;
 
 // TODO: Auto-generated Javadoc
@@ -29,7 +31,9 @@ import global.coda.hmsbackend.models.User;
  * The Class DaoUtil.
  */
 public class DaoUtil {
-	
+
+	/** The resource bundle. */
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(DaoUtil.class);
 
@@ -37,7 +41,7 @@ public class DaoUtil {
 	 * Sets the id for user.
 	 *
 	 * @param userPreparedStatement the user prepared statement
-	 * @param user the user
+	 * @param user                  the user
 	 * @return true, if successful
 	 * @throws SQLException the SQL exception
 	 */
@@ -48,7 +52,7 @@ public class DaoUtil {
 		if ((resultSetId != null) && resultSetId.next()) {
 			int userId = resultSetId.getInt(ONE);
 			user.setUserId(userId);
-			LOGGER.info("User details are set successfully");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1005I));
 			result = true;
 		}
 		LOGGER.traceExit();
@@ -59,12 +63,11 @@ public class DaoUtil {
 	 * Sets the user details.
 	 *
 	 * @param userPreparedStatement the user prepared statement
-	 * @param user the user
+	 * @param user                  the user
 	 * @throws SQLException the SQL exception
 	 */
 	public void setUserDetails(PreparedStatement userPreparedStatement, User user) throws SQLException {
 		LOGGER.traceEntry();
-		LOGGER.info("setting up user details");
 		userPreparedStatement.setString(ONE, user.getUsername());
 		userPreparedStatement.setString(TWO, user.getPassword());
 		userPreparedStatement.setString(THREE, user.getEmail());
@@ -76,7 +79,7 @@ public class DaoUtil {
 		userPreparedStatement.setString(NINE, user.getState());
 		userPreparedStatement.setString(TEN, user.getStreet());
 		userPreparedStatement.setInt(ELEVEN, user.getRoleId());
-		LOGGER.info("User details are set successfully");
+		LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1005I));
 		LOGGER.traceExit();
 	}
 }

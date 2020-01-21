@@ -10,23 +10,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import global.coda.hmsbackend.config.DBConnection;
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.constants.NumericConstants;
 import global.coda.hmsbackend.constants.QueryConstants;
 import global.coda.hmsbackend.exception.DoctorNotFound;
 import global.coda.hmsbackend.models.Doctor;
 import global.coda.hmsbackend.utils.DaoUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DoctorDAO.
  */
 public class DoctorDAO {
 
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(DoctorDAO.class);
 
@@ -73,35 +75,35 @@ public class DoctorDAO {
 		Connection databaseConnection;
 		databaseConnection = DBConnection.establishConnection();
 		try {
-			int rowsChangedForDoctor = 0;
-			int rowsChangedForUser = 0;
+			int rowsAffectedInDoctorEntity = 0;
+			int rowsAffectedInPatientEntity = 0;
 			userDao = new DaoUtil();
 			databaseConnection.setAutoCommit(false);
 			PreparedStatement preparedStatementForUser = databaseConnection.prepareStatement(QueryConstants.USER_INSERT,
 					Statement.RETURN_GENERATED_KEYS);
 			userDao.setUserDetails(preparedStatementForUser, doctor);
-			rowsChangedForUser = preparedStatementForUser.executeUpdate();
-			if (rowsChangedForUser == 1) {
+			rowsAffectedInPatientEntity = preparedStatementForUser.executeUpdate();
+			if (rowsAffectedInPatientEntity == 1) {
 				if (userDao.setIdForUser(preparedStatementForUser, doctor)) {
-					LOGGER.info("User details are set successfully");
+					LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1005I));
 					PreparedStatement preparedStatementForDoctor = databaseConnection
 							.prepareStatement(QueryConstants.DOCTOR_INSERT, Statement.RETURN_GENERATED_KEYS);
 					setDoctorDetails(preparedStatementForDoctor, doctor);
-					rowsChangedForDoctor = preparedStatementForDoctor.executeUpdate();
-					if (rowsChangedForDoctor == 1) {
+					rowsAffectedInDoctorEntity = preparedStatementForDoctor.executeUpdate();
+					if (rowsAffectedInDoctorEntity == 1) {
 						if (setIdForDoctor(preparedStatementForDoctor, doctor)) {
-							LOGGER.info("Doctor ID is set successfully");
+							LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1013I));
 							databaseConnection.commit();
 						} else {
-							LOGGER.info("Doctor ID is not set");
+							LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1014I));
 						}
 					}
 				}
 			} else {
-				LOGGER.info("User ID is not set");
+				LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1015I));
 			}
 		} catch (SQLException e) {
-			LOGGER.info("Exception while creating doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1016I));
 			databaseConnection.rollback();
 			throw (e);
 		}
@@ -123,7 +125,7 @@ public class DoctorDAO {
 		LOGGER.traceEntry(Integer.toString(userId));
 		LOGGER.traceExit(doctor.toString());
 		userDao = new DaoUtil();
-		int rowsChangedForDoctor = 0, rowsChangedForUser = 0;
+		int rowsAffectedInDoctorEntity = 0, rowsAffectedInUserEntity = 0;
 		Doctor checkDoctor = null;
 		checkDoctor = readDoctor(userId);
 		if (checkDoctor != null) {
@@ -135,26 +137,26 @@ public class DoctorDAO {
 				userDao.setUserDetails(userpreparedStatement, doctor);
 				doctor.setDoctorId(userId);
 				userpreparedStatement.setInt(NumericConstants.ELEVEN, userId);
-				rowsChangedForUser = userpreparedStatement.executeUpdate();
-				if (rowsChangedForUser > 0) {
-					LOGGER.info("User details are updated successfully");
+				rowsAffectedInUserEntity = userpreparedStatement.executeUpdate();
+				if (rowsAffectedInUserEntity > 0) {
+					LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1008I));
 					PreparedStatement doctorPreparedStatement = databaseConnection
 							.prepareStatement(QueryConstants.DOCTOR_UPDATE);
 					setDoctorDetails(doctorPreparedStatement, doctor);
 					doctorPreparedStatement.setInt(NumericConstants.THREE, userId);
-					rowsChangedForDoctor = doctorPreparedStatement.executeUpdate();
-					if (rowsChangedForDoctor > 0) {
-						LOGGER.info("Doctor details are updated successfully");
+					rowsAffectedInDoctorEntity = doctorPreparedStatement.executeUpdate();
+					if (rowsAffectedInDoctorEntity > 0) {
+						LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1017I));
 						databaseConnection.commit();
 					}
 				}
 			} catch (SQLException e) {
 				databaseConnection.rollback();
-				LOGGER.info("Exception while updating patient");
+				LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1020I));
 				throw (e);
 			}
 		} else {
-			throw new DoctorNotFound("Doctor details are not found");
+			throw new DoctorNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 		}
 		LOGGER.traceExit(doctor.toString());
 		return doctor;
@@ -253,7 +255,7 @@ public class DoctorDAO {
 		preparedStatementForDoctor.setInt(NumericConstants.ONE, doctor.getDoctorexperience());
 		preparedStatementForDoctor.setString(NumericConstants.TWO, doctor.getDoctorspeciality());
 		preparedStatementForDoctor.setInt(NumericConstants.THREE, doctor.getUserId());
-		LOGGER.info("Doctor details are set successfully");
+		LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1018I));
 		LOGGER.traceExit(doctor.toString());
 	}
 
@@ -272,7 +274,7 @@ public class DoctorDAO {
 		if ((resultSetId != null) && resultSetId.next()) {
 			int userId = resultSetId.getInt(1);
 			doctor.setDoctorId(userId);
-			LOGGER.info("Doctor ID is set successfully");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1019I));
 			result = true;
 		}
 		LOGGER.traceExit(doctor.toString());

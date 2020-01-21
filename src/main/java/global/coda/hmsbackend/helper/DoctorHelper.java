@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.dao.DoctorDAO;
 import global.coda.hmsbackend.dao.PatientDAO;
 import global.coda.hmsbackend.exception.BusinessException;
@@ -22,12 +24,13 @@ import global.coda.hmsbackend.models.Doctor;
 import global.coda.hmsbackend.models.DoctorPatientMapper;
 import global.coda.hmsbackend.utils.InputValidator;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DoctorHelper.
  */
 public class DoctorHelper {
 
+	/** The resource bundle. */
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(DoctorHelper.class);
 
@@ -51,7 +54,7 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			createdDoctor = doctordao.createDoctor(doctor);
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while creating a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1027I));
 			throw new SystemException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -76,22 +79,22 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			boolean validQuery = inputchecker.validateInteger(id);
 			if (!validQuery) {
-				throw new NumberFormatException("Please enter a number");
+				throw new NumberFormatException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3001E));
 			}
 			boolean nullvalidator = inputchecker.validateNullValue(id);
 			if (nullvalidator) {
-				throw new EmptyValueException("Please enter a value");
+				throw new EmptyValueException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3002E));
 			}
 			int doctorId = Integer.parseInt(id);
 			doctor = doctordao.readDoctor(doctorId);
 			if (doctor == null) {
-				throw new DoctorNotFound("Doctor details are not found");
+				throw new DoctorNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception occured while reading a doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1028I));
 			throw new SystemException(e);
 		} catch (DoctorNotFound e) {
-			LOGGER.info("Doctor details are not found while reading a doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1029I));
 			throw new BusinessException(e);
 		} catch (NumberFormatException | EmptyValueException e) {
 			throw new BusinessException(e);
@@ -116,13 +119,13 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			alldoctors = doctordao.readAllDoctors();
 			if (alldoctors.size() < 1) {
-				throw new DoctorNotFound("Doctor details are not found");
+				throw new DoctorNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			}
 		} catch (DoctorNotFound e) {
-			LOGGER.info("Doctor details are not found");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			throw new BusinessException(e);
 		} catch (ClassNotFoundException | SQLException e) {
-			LOGGER.info("Exception while reading all doctors");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1028I));
 			throw new SystemException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -146,10 +149,10 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			updatedDoctor = doctordao.updateDoctor(doctor.getUserId(), doctor);
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while updating a Doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1030I));
 			throw new SystemException(e);
 		} catch (DoctorNotFound e) {
-			LOGGER.info("Doctor not found while updating a Doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			throw new BusinessException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -175,24 +178,25 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			boolean validQuery = inputchecker.validateInteger(id);
 			if (!validQuery) {
-				throw new NumberFormatException("Please enter a number");
+				throw new NumberFormatException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3001E));
 			}
 			boolean nullvalidator = inputchecker.validateNullValue(id);
 			if (nullvalidator) {
-				throw new EmptyValueException("Please enter a value");
+				throw new EmptyValueException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3002E));
 			}
 			int doctorId = Integer.parseInt(id);
 			doctor = doctordao.readDoctor(doctorId);
 			if (doctor != null) {
 				isdeleted = doctordao.deleteDoctor(doctorId);
 			} else {
-				throw new DoctorNotFound("Doctor details are not found");
+				throw new DoctorNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while Deleting a patient");
+
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1031I));
 			throw new SystemException(e);
 		} catch (DoctorNotFound | EmptyValueException e) {
-			LOGGER.info("Doctor not found while Deleting a doctor");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			throw new BusinessException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -217,18 +221,18 @@ public class DoctorHelper {
 			doctordao = new DoctorDAO();
 			boolean validQuery = inputchecker.validateInteger(id);
 			if (!validQuery) {
-				throw new NumberFormatException("Please enter a number");
+				throw new NumberFormatException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3001E));
 			}
 			boolean nullvalidator = inputchecker.validateNullValue(id);
 			if (nullvalidator) {
-				throw new EmptyValueException("Please enter a value");
+				throw new EmptyValueException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3002E));
 			}
 			Doctor doctor = null;
 			int doctorId = Integer.parseInt(id);
 			doctordao = new DoctorDAO();
 			doctor = doctordao.readDoctor(doctorId);
 			if (doctor == null) {
-				throw new DoctorNotFound("Doctor details are not available");
+				throw new DoctorNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			}
 			PatientDAO patientDao = new PatientDAO();
 			doctorpatientMappers = patientDao.findPatientsByDoctorId(doctorId);
@@ -250,7 +254,8 @@ public class DoctorHelper {
 	 * @throws SystemException   the system exception
 	 * @throws BusinessException the business exception
 	 */
-	public Map<Integer, List<DoctorPatientMapper>> findPatientsOfAllDoctors() throws SystemException, BusinessException {
+	public Map<Integer, List<DoctorPatientMapper>> findPatientsOfAllDoctors()
+			throws SystemException, BusinessException {
 		LOGGER.traceEntry();
 		Map<Integer, List<DoctorPatientMapper>> patientsOfAllDoctors = new HashMap<Integer, List<DoctorPatientMapper>>();
 		try {

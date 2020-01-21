@@ -5,10 +5,12 @@ package global.coda.hmsbackend.helper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.dao.PatientDAO;
 import global.coda.hmsbackend.exception.BusinessException;
 import global.coda.hmsbackend.exception.EmptyValueException;
@@ -17,12 +19,13 @@ import global.coda.hmsbackend.exception.SystemException;
 import global.coda.hmsbackend.models.Patient;
 import global.coda.hmsbackend.utils.InputValidator;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PatientHelper.
  */
 public class PatientHelper {
 
+	/** The resource bundle. */
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The inputchecker. */
 	private InputValidator inputchecker;
 
@@ -48,22 +51,22 @@ public class PatientHelper {
 			patientdao = new PatientDAO();
 			boolean validQuery = inputchecker.validateInteger(id);
 			if (!validQuery) {
-				throw new NumberFormatException("Please enter a number");
+				throw new NumberFormatException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3001E));
 			}
 			boolean nullvalidator = inputchecker.validateNullValue(id);
 			if (nullvalidator) {
-				throw new EmptyValueException("Please enter a value");
+				throw new EmptyValueException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3002E));
 			}
 			int patientId = Integer.parseInt(id);
 			patient = patientdao.readPatient(patientId);
 			if (patient == null) {
-				throw new PatientNotFound("Patient details are not found");
+				throw new PatientNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3003E));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception occured while reading a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1023I));
 			throw new SystemException(e);
 		} catch (PatientNotFound e) {
-			LOGGER.info("Patient details are not found while reading a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1024I));
 			throw new BusinessException(e);
 		} catch (NumberFormatException | EmptyValueException e) {
 			throw new BusinessException(e);
@@ -88,13 +91,13 @@ public class PatientHelper {
 			patientdao = new PatientDAO();
 			allpatients = patientdao.readAllPatients();
 			if (allpatients.size() < 1) {
-				throw new PatientNotFound("Patient details are not found");
+				throw new PatientNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3003E));
 			}
 		} catch (PatientNotFound e) {
-			LOGGER.info("Patient details are not found");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3003E));
 			throw new BusinessException(e);
 		} catch (ClassNotFoundException | SQLException e) {
-			LOGGER.info("Exception while reading all patients");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1023I));
 			throw new SystemException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -117,7 +120,7 @@ public class PatientHelper {
 			patientdao = new PatientDAO();
 			createdpatient = patientdao.createPatient(patient);
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while creating a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1021I));
 			throw new SystemException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -141,7 +144,7 @@ public class PatientHelper {
 			patientdao = new PatientDAO();
 			updatedpatient = patientdao.updatePatient(patient.getUserId(), patient);
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while updating a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1022I));
 			throw new SystemException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);
@@ -166,24 +169,24 @@ public class PatientHelper {
 			patientdao = new PatientDAO();
 			boolean validQuery = inputchecker.validateInteger(id);
 			if (!validQuery) {
-				throw new NumberFormatException("Please enter a number");
+				throw new NumberFormatException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3001E));
 			}
 			boolean nullvalidator = inputchecker.validateNullValue(id);
 			if (nullvalidator) {
-				throw new EmptyValueException("Please enter a value");
+				throw new EmptyValueException(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3002E));
 			}
 			int patientId = Integer.parseInt(id);
 			patient = patientdao.readPatient(patientId);
 			if (patient != null) {
 				isdeleted = patientdao.deletePatient(patientId);
 			} else {
-				throw new PatientNotFound("Patient details are not found");
+				throw new PatientNotFound(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS3000E));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
-			LOGGER.info("Exception while Deleting a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1025I));
 			throw new SystemException(e);
 		} catch (PatientNotFound | EmptyValueException e) {
-			LOGGER.info("Patient not found while Deleting a patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1026I));
 			throw new BusinessException(e);
 		} catch (Exception e) {
 			throw new SystemException(e);

@@ -10,11 +10,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import global.coda.hmsbackend.config.DBConnection;
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.constants.NumericConstants;
 import global.coda.hmsbackend.constants.QueryConstants;
 import global.coda.hmsbackend.exception.PatientNotFound;
@@ -22,12 +24,12 @@ import global.coda.hmsbackend.models.DoctorPatientMapper;
 import global.coda.hmsbackend.models.Patient;
 import global.coda.hmsbackend.utils.DaoUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PatientDAO.
  */
 public class PatientDAO {
 
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(PatientDAO.class);
 
@@ -94,32 +96,32 @@ public class PatientDAO {
 	public Patient createPatient(Patient patient) throws SQLException, ClassNotFoundException {
 		LOGGER.traceEntry(patient.toString());
 		userDao = new DaoUtil();
-		int rowsChangedForPatient = 0;
-		int rowsChangedForUser = 0;
+		int rowsAffectedInPatientEntity = 0;
+		int rowsAffectedInUserEntity = 0;
 		Connection databaseConnection = DBConnection.establishConnection();
 		try {
 			databaseConnection.setAutoCommit(false);
 			PreparedStatement preparedStatementForUser = databaseConnection.prepareStatement(QueryConstants.USER_INSERT,
 					Statement.RETURN_GENERATED_KEYS);
 			userDao.setUserDetails(preparedStatementForUser, patient);
-			rowsChangedForUser = preparedStatementForUser.executeUpdate();
-			if (rowsChangedForUser == 1) {
+			rowsAffectedInUserEntity = preparedStatementForUser.executeUpdate();
+			if (rowsAffectedInUserEntity == 1) {
 				if (userDao.setIdForUser(preparedStatementForUser, patient)) {
-					LOGGER.info("User Details are set successfully");
+					LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1005I));
 					PreparedStatement preparedStatementforPatient = databaseConnection
 							.prepareStatement(QueryConstants.PATIENT_INSERT, Statement.RETURN_GENERATED_KEYS);
 					setPatientDetails(preparedStatementforPatient, patient);
-					rowsChangedForPatient = preparedStatementforPatient.executeUpdate();
-					if (rowsChangedForPatient == 1) {
+					rowsAffectedInPatientEntity = preparedStatementforPatient.executeUpdate();
+					if (rowsAffectedInPatientEntity == 1) {
 						if (setIdForPatient(preparedStatementforPatient, patient)) {
 							databaseConnection.commit();
 						} else {
-							LOGGER.info("Error occured at setting patient details");
+							LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1006I));
 						}
 					}
 				}
 			} else {
-				LOGGER.info("Error occured at setting user details");
+				LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1007I));
 			}
 		} catch (SQLException e) {
 			databaseConnection.rollback();
@@ -143,32 +145,30 @@ public class PatientDAO {
 		LOGGER.traceEntry(Integer.toString(userId));
 		LOGGER.traceEntry(updatedpatient.toString());
 		userDao = new DaoUtil();
-		int rowsChangedForPatient = 0, rowsChangedForUser = 0;
+		int rowsAffectedInPatientEntity = 0, rowsAffectedInUserEntity = 0;
 		readPatient(userId);
 		Connection databaseConnection = DBConnection.establishConnection();
 		try {
 			databaseConnection.setAutoCommit(false);
 			PreparedStatement userPreparedStatement = databaseConnection.prepareStatement(QueryConstants.USER_UPDATE);
-			LOGGER.info("Before Prepared Statement");
 			userDao.setUserDetails(userPreparedStatement, updatedpatient);
-			LOGGER.info("After Prepared Statement");
 			userPreparedStatement.setInt(NumericConstants.ELEVEN, userId);
-			rowsChangedForUser = userPreparedStatement.executeUpdate();
-			if (rowsChangedForUser > 0) {
-				LOGGER.info("User details have been updated successfully");
+			rowsAffectedInUserEntity = userPreparedStatement.executeUpdate();
+			if (rowsAffectedInUserEntity > 0) {
+				LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1008I));
 				PreparedStatement patientPreparedStatement = databaseConnection
 						.prepareStatement(QueryConstants.PATIENT_UPDATE);
 				setPatientDetails(patientPreparedStatement, updatedpatient);
 				patientPreparedStatement.setInt(NumericConstants.FOUR, userId);
-				rowsChangedForPatient = patientPreparedStatement.executeUpdate();
-				if (rowsChangedForPatient > 0) {
-					LOGGER.info("Patient details have been updated successfully");
+				rowsAffectedInPatientEntity = patientPreparedStatement.executeUpdate();
+				if (rowsAffectedInPatientEntity > 0) {
+					LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1009I));
 					databaseConnection.commit();
 				}
 			}
 		} catch (SQLException e) {
 			databaseConnection.rollback();
-			LOGGER.info("Error occured at updating patient");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1010I));
 			throw (e);
 		}
 		LOGGER.traceExit(updatedpatient.toString());
@@ -297,7 +297,7 @@ public class PatientDAO {
 		preparedStatement.setString(NumericConstants.TWO, patient.getBloodGroup());
 		preparedStatement.setInt(NumericConstants.THREE, patient.getPatientWeight());
 		preparedStatement.setInt(NumericConstants.FOUR, patient.getUserId());
-		LOGGER.info("Patient details are set successfully");
+		LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1011I));
 		LOGGER.traceExit(patient);
 	}
 
@@ -316,7 +316,7 @@ public class PatientDAO {
 		if ((resultSetId != null) && resultSetId.next()) {
 			int userId = resultSetId.getInt(NumericConstants.ONE);
 			patient.setPatientId(userId);
-			LOGGER.info("Patient id set successfully");
+			LOGGER.info(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1012I));
 			result = true;
 		}
 		LOGGER.traceExit(patient);

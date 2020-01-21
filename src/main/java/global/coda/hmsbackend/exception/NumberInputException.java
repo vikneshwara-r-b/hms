@@ -16,7 +16,7 @@ public class NumberInputException extends Exception {
 	 */
 	public NumberInputException(String arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
+
 	}
 
 }

@@ -19,13 +19,13 @@ public class Doctor extends User {
 	private int doctorId;
 
 	/** The doctorexperience. */
-	private int doctorexperience;
+	private int doctorExperience;
 
 	/** The doctorspeciality. */
-	private String doctorspeciality;
+	private String doctorSpeciality;
 
 	/** The isactive. */
-	private int isactive;
+	private int isActive;
 
 	/** The created on. */
 	private Date createdOn;
@@ -40,8 +40,8 @@ public class Doctor extends User {
 	 */
 	@Override
 	public String toString() {
-		return "Doctor [doctorId=" + doctorId + ", doctorexperience=" + doctorexperience + ", doctorspeciality="
-				+ doctorspeciality + ", isactive=" + isactive + ", createdOn=" + createdOn + ", updatedOn=" + updatedOn
+		return "Doctor [doctorId=" + doctorId + ", doctorexperience=" + doctorExperience + ", doctorspeciality="
+				+ doctorSpeciality + ", isactive=" + isActive + ", createdOn=" + createdOn + ", updatedOn=" + updatedOn
 				+ ", toString()=" + super.toString() + ", getUserId()=" + getUserId() + ", getUsername()="
 				+ getUsername() + ", getPassword()=" + getPassword() + ", getEmail()=" + getEmail()
 				+ ", getPhonenumber()=" + getPhonenumber() + ", getFirstname()=" + getFirstname() + ", getLastname()="
@@ -55,7 +55,7 @@ public class Doctor extends User {
 	 * @return the isactive
 	 */
 	public int getIsactive() {
-		return isactive;
+		return isActive;
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Doctor extends User {
 	 * @param isactive the new isactive
 	 */
 	public void setIsactive(int isactive) {
-		this.isactive = isactive;
+		this.isActive = isactive;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Doctor extends User {
 	 * @return the doctorexperience
 	 */
 	public int getDoctorexperience() {
-		return doctorexperience;
+		return doctorExperience;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Doctor extends User {
 	 * @param doctorexperience the new doctorexperience
 	 */
 	public void setDoctorexperience(int doctorexperience) {
-		this.doctorexperience = doctorexperience;
+		this.doctorExperience = doctorexperience;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Doctor extends User {
 	 * @return the doctorspeciality
 	 */
 	public String getDoctorspeciality() {
-		return doctorspeciality;
+		return doctorSpeciality;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Doctor extends User {
 	 * @param doctorspeciality the new doctorspeciality
 	 */
 	public void setDoctorspeciality(String doctorspeciality) {
-		this.doctorspeciality = doctorspeciality;
+		this.doctorSpeciality = doctorspeciality;
 	}
 
 	/**

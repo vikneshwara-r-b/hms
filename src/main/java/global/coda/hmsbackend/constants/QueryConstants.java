@@ -10,6 +10,10 @@ package global.coda.hmsbackend.constants;
  * @author Vc
  */
 public final class QueryConstants {
+
+	/**
+	 * Instantiates a new query constants.
+	 */
 	private QueryConstants() {
 		// Query Constants
 	}
@@ -103,6 +107,18 @@ public final class QueryConstants {
 	/** The Constant DOCTOR_UPDATEDON. */
 	public static final String DOCTOR_UPDATEDON = "doctor_updated_on";
 
+	/** The Constant PATIENT_ROLE_ID. */
+	public static final int PATIENT_ROLE_ID = 2;
+
+	/** The Constant DOCTOR_ROLE_ID. */
+	public static final int DOCTOR_ROLE_ID = 3;
+
+	/** The Constant IS_ACTIVE. */
+	public static final int ACTIVE = 1;
+
+	/** The Constant NOT_ACTIVE. */
+	public static final int NOT_ACTIVE = 0;
+
 	/** The Constant DOCTOR_INSERT. */
 	// Doctor Queries
 	public static final String DOCTOR_INSERT = "INSERT INTO" + " `hospital_management_system`." + "`t_doctor_details` "
@@ -116,8 +132,8 @@ public final class QueryConstants {
 			+ "user.user_isactive,doctor.doctor_isactive,"
 			+ "doctor.pk_doctor_id,user.user_created_on,user.user_updated_on "
 			+ "from t_user_details as user INNER JOIN t_doctor_details as doctor"
-			+ " on user.pk_user_id = doctor.fk_user_id where user.user_isactive=1 "
-			+ "and doctor.doctor_isactive=1 and user.fk_role_id=3";
+			+ " on user.pk_user_id = doctor.fk_user_id where user.user_isactive=" + ACTIVE
+			+ " and doctor.doctor_isactive=" + ACTIVE + " and user.fk_role_id=" + DOCTOR_ROLE_ID;
 
 	/** The Constant DOCTOR_READ. */
 	public static final String DOCTOR_READ = "select user.pk_user_id,user.user_username,"
@@ -127,13 +143,14 @@ public final class QueryConstants {
 			+ "doctor.doctor_speciality,user.user_isactive,doctor.doctor_isactive,"
 			+ "doctor.pk_doctor_id,user.user_created_on,user.user_updated_on from"
 			+ " t_user_details as user INNER JOIN t_doctor_details as doctor on user.pk_user_id = doctor.fk_user_id"
-			+ " where user.user_isactive=1 and doctor.doctor_isactive=1 and user.fk_role_id=3"
-			+ " and user.pk_user_id=?";
+			+ " where user.user_isactive=" + ACTIVE + " and doctor.doctor_isactive=" + ACTIVE + " and user.fk_role_id="
+			+ DOCTOR_ROLE_ID + " and user.pk_user_id=?";
 
 	/** The Constant DOCTOR_DELETE. */
 	public static final String DOCTOR_DELETE = "update t_user_details as user,t_doctor_details as doctor "
-			+ "set user.user_isactive=0,doctor.doctor_isactive=0 where user.pk_user_id=? and "
-			+ "user.pk_user_id=doctor.fk_user_id and user.user_isactive=1 and  user.fk_role_id =3";
+			+ "set user.user_isactive=" + NOT_ACTIVE + ",doctor.doctor_isactive=" + NOT_ACTIVE
+			+ " where user.pk_user_id=? and " + "user.pk_user_id=doctor.fk_user_id and user.user_isactive=" + ACTIVE
+			+ " and user.fk_role_id =" + DOCTOR_ROLE_ID;
 
 	/** The Constant DOCTOR_UPDATE. */
 	public static final String DOCTOR_UPDATE = "update t_doctor_details set doctor_experience=?,"
@@ -152,8 +169,8 @@ public final class QueryConstants {
 			+ "patient.patient_weight,user.user_isactive,user.user_created_on,"
 			+ "user.user_updated_on,patient.patient_isactive,patient.pk_patient_id "
 			+ "from t_user_details as user INNER JOIN t_patient_details as patient "
-			+ "on user.pk_user_id = patient.fk_userid where user.user_isactive=1 "
-			+ "and patient.patient_isactive=1 and user.fk_role_id=2";
+			+ "on user.pk_user_id = patient.fk_userid where user.user_isactive=" + ACTIVE
+			+ " and patient.patient_isactive=" + ACTIVE + " and user.fk_role_id=" + PATIENT_ROLE_ID;
 
 	/** The Constant PATIENT_READ. */
 	public static final String PATIENT_READ = "select user.pk_user_id,user.user_username,user.user_password,user.user_email,"
@@ -163,13 +180,14 @@ public final class QueryConstants {
 			+ "user.user_isactive,user.user_created_on,user.user_updated_on,"
 			+ "patient.patient_isactive,patient.pk_patient_id from t_user_details as user "
 			+ "INNER JOIN t_patient_details as patient on user.pk_user_id = patient.fk_userid "
-			+ "where user.user_isactive=1 and patient.patient_isactive=1 "
-			+ "and user.fk_role_id=2 and user.pk_user_id=?";
+			+ "where user.user_isactive=" + ACTIVE + " and patient.patient_isactive=" + ACTIVE + " and user.fk_role_id="
+			+ PATIENT_ROLE_ID + " and user.pk_user_id=?";
 
 	/** The Constant PATIENT_DELETE. */
 	public static final String PATIENT_DELETE = "update t_user_details as user,t_patient_details as"
-			+ " patient set user.user_isactive=0,patient.patient_isactive=0 where user.pk_user_id=? "
-			+ "and user.pk_user_id=patient.fk_userid and user.user_isactive=1 and  " + "user.fk_role_id =2";
+			+ " patient set user.user_isactive=" + NOT_ACTIVE + ",patient.patient_isactive=" + NOT_ACTIVE
+			+ " where user.pk_user_id=? " + "and user.pk_user_id=patient.fk_userid and user.user_isactive=" + ACTIVE
+			+ " and  " + "user.fk_role_id =" + PATIENT_ROLE_ID;
 
 	/** The Constant PATIENT_UPDATE. */
 	public static final String PATIENT_UPDATE = "update t_patient_details set "
@@ -199,10 +217,11 @@ public final class QueryConstants {
 			+ "patient.patient_blood_group,patient.patient_weight,record.patient_disease,"
 			+ "patient.pk_patient_id,patient.patient_isactive from \r\n" + "t_user_details user INNER JOIN \r\n"
 			+ "t_patient_details patient ON user.pk_user_id=patient.fk_userid \r\n"
-			+ "INNER JOIN t_record record ON record.fk_patient_id=patient.fk_userid \r\n"
-			+ "WHERE user.user_isactive=1 and patient.patient_isactive=1 and record.doctor_patient_mapping_isactive=1  \r\n"
-			+ "and record.fk_doctor_id=? group by patient.pk_patient_id";
+			+ "INNER JOIN t_record record ON record.fk_patient_id=patient.fk_userid \r\n" + "WHERE user.user_isactive="
+			+ ACTIVE + " and patient.patient_isactive=" + ACTIVE + " and record.doctor_patient_mapping_isactive="
+			+ ACTIVE + "  \r\n" + "and record.fk_doctor_id=? group by patient.pk_patient_id";
 
 	/** The Constant SELECT_ALL_DOCTOR_ID. */
-	public static final String SELECT_ALL_DOCTOR_ID = "select pk_user_id from t_user_details " + "where fk_role_id=3";
+	public static final String SELECT_ALL_DOCTOR_ID = "select pk_user_id from t_user_details " + "where fk_role_id="
+			+ DOCTOR_ROLE_ID;
 }

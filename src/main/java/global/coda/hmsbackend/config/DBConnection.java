@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 
 import global.coda.hmsbackend.constants.DBConstants;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DBConnection.
  */

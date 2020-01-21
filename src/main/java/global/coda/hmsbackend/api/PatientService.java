@@ -4,6 +4,7 @@
 package global.coda.hmsbackend.api;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.constants.HttpStatusConstants;
 import global.coda.hmsbackend.delegate.PatientDelegate;
 import global.coda.hmsbackend.exception.BusinessException;
@@ -25,13 +27,14 @@ import global.coda.hmsbackend.exception.SystemException;
 import global.coda.hmsbackend.models.Patient;
 import global.coda.hmsbackend.models.ResponseBody;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PatientService.
  */
 @Path("/patient")
 public class PatientService {
 
+	/** The resource bundle. */
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(PatientService.class);
 
@@ -41,6 +44,7 @@ public class PatientService {
 	/** The response. */
 	private ResponseBody response;
 
+	/** The patient. */
 	private Patient patient;
 
 	/**
@@ -154,10 +158,10 @@ public class PatientService {
 		result = patientdelegate.deletePatient(patientId);
 		if (result) {
 			response.setStatusCode(HttpStatusConstants.NO_CONTENT);
-			response.setData("Patient is deleted successfully");
+			response.setData(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1000I));
 		} else {
 			response.setStatusCode(HttpStatusConstants.INTERNAL_SERVER_ERROR);
-			response.setData("Patient is not deleted successfully");
+			response.setData(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1001I));
 		}
 		LOGGER.traceExit(response);
 		return response;

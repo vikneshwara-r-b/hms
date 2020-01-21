@@ -3,7 +3,6 @@
  */
 package global.coda.hmsbackend.constants;
 
-// TODO: Auto-generated Javadoc
 /**
  * Database authentication constants.
  *
@@ -11,7 +10,7 @@ package global.coda.hmsbackend.constants;
  *
  */
 public final class DBConstants {
-	
+
 	/**
 	 * Instantiates a new DB constants.
 	 */

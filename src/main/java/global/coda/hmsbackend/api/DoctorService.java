@@ -5,6 +5,7 @@ package global.coda.hmsbackend.api;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import global.coda.hmsbackend.constants.ApplicationConstants;
 import global.coda.hmsbackend.constants.HttpStatusConstants;
 import global.coda.hmsbackend.delegate.DoctorDelegate;
 import global.coda.hmsbackend.exception.BusinessException;
@@ -34,14 +36,18 @@ import global.coda.hmsbackend.models.ResponseBody;
 @Path("/doctor")
 public class DoctorService {
 
+	/** The resource bundle. */
+	ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(ApplicationConstants.MESSAGES_BUNDLE);
 	/** The logger. */
 	private final Logger LOGGER = LogManager.getLogger(DoctorService.class);
 
 	/** The doctor delegate. */
 	private DoctorDelegate doctorDelegate;
 
+	/** The doctor. */
 	private Doctor doctor;
 
+	/** The response. */
 	private ResponseBody response;
 
 	/**
@@ -154,11 +160,11 @@ public class DoctorService {
 		doctorDelegate = new DoctorDelegate();
 		result = doctorDelegate.deletePatient(patientId);
 		if (result) {
-			response.setData("Doctor is deleted successfully");
+			response.setData(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1002I));
 			response.setStatusCode(HttpStatusConstants.NO_CONTENT);
 		} else {
 			response.setStatusCode(HttpStatusConstants.INTERNAL_SERVER_ERROR);
-			response.setData("Doctor is not deleted successfully");
+			response.setData(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1003I));
 		}
 		LOGGER.traceExit(Boolean.toString(result));
 		return response;
@@ -183,7 +189,7 @@ public class DoctorService {
 		doctorDelegate = new DoctorDelegate();
 		doctorPatientMappers = doctorDelegate.findPatientsOfDoctor(doctorId);
 		if (doctorPatientMappers == null) {
-			response.setData("No patients are available for the doctor");
+			response.setData(RESOURCE_BUNDLE.getString(ApplicationConstants.HMS1004I));
 			response.setStatusCode(HttpStatusConstants.OK);
 		} else {
 			response.setData(doctorPatientMappers);

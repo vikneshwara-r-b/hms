@@ -3,9 +3,8 @@
  */
 package global.coda.hmsbackend.utils;
 
-import static global.coda.hmsbackend.constants.ApplicationConstants.NUMERIC_REGEX;
+import global.coda.hmsbackend.constants.ApplicationConstants;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class InputValidator.
  */
@@ -19,7 +18,7 @@ public class InputValidator {
 	 */
 	public boolean validateInteger(String value) {
 		boolean result = false;
-		if (value.matches(NUMERIC_REGEX)) {
+		if (value.matches(ApplicationConstants.NUMERIC_REGEX)) {
 			result = true;
 		}
 		return result;

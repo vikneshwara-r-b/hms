@@ -27,7 +27,7 @@ public class Patient extends User {
 	private String bloodGroup;
 
 	/** The isactive. */
-	private int isactive;
+	private int isActive;
 
 	/** The created on. */
 	private Date createdOn;
@@ -43,7 +43,7 @@ public class Patient extends User {
 	@Override
 	public String toString() {
 		return "Patient [patientId=" + patientId + ", patientHeight=" + patientHeight + ", patientWeight="
-				+ patientWeight + ", bloodGroup=" + bloodGroup + ", isactive=" + isactive + ", createdOn=" + createdOn
+				+ patientWeight + ", bloodGroup=" + bloodGroup + ", isactive=" + isActive + ", createdOn=" + createdOn
 				+ ", updatedOn=" + updatedOn + ", getUserId()=" + getUserId() + ", getUsername()=" + getUsername()
 				+ ", getPassword()=" + getPassword() + ", getEmail()=" + getEmail() + ", getPhonenumber()="
 				+ getPhonenumber() + ", getFirstname()=" + getFirstname() + ", getLastname()=" + getLastname()
@@ -129,7 +129,7 @@ public class Patient extends User {
 	 * @return the isactive
 	 */
 	public int getIsactive() {
-		return isactive;
+		return isActive;
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class Patient extends User {
 	 * @param isactive the new isactive
 	 */
 	public void setIsactive(int isactive) {
-		this.isactive = isactive;
+		this.isActive = isactive;
 	}
 
 	/**

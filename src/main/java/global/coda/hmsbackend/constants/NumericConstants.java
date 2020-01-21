@@ -3,12 +3,11 @@
  */
 package global.coda.hmsbackend.constants;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class NumericConstants.
  */
 public final class NumericConstants {
-	
+
 	/**
 	 * Instantiates a new numeric constants.
 	 */

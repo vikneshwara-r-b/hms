@@ -3,12 +3,11 @@
  */
 package global.coda.hmsbackend.constants;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class HttpStatusConstants.
  */
 public final class HttpStatusConstants {
-	
+
 	/**
 	 * Instantiates a new http status constants.
 	 */

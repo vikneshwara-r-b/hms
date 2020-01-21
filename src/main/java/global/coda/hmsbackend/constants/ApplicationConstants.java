@@ -19,7 +19,7 @@ public final class ApplicationConstants {
 	}
 
 	/** The Constant MESSAGES_BUNDLE. */
-	public static final String MESSAGES_BUNDLE = "messages";
+	public static final String MESSAGES_BUNDLE = "message";
 
 	/** The Constant NUMERIC_REGEX. */
 	public static final String NUMERIC_REGEX = "[0-9]+";
